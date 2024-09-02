@@ -7,6 +7,7 @@ import useCategory from "../../hooks/useCategory";
 import { useCart } from "../../context/cart";
 import { Badge } from "antd";
 import axios from "axios";
+import { SERVER_URL } from "../../../../common/config";
 const Header = () => {
   const [auth, setAuth] = useAuth();
   const [cart] = useCart();
@@ -17,7 +18,7 @@ const Header = () => {
       user: null,
       token: "",
     });
-    const res = await axios.get("http://localhost:3000/api/v1/auth/logout", {
+    const res = await axios.get(SERVER_URL+"/api/v1/auth/logout", {
       headers: {
         "Content-Type": "application/json",
       },

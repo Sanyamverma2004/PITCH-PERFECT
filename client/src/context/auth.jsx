@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext, createContext } from "react";
 import axios from "axios";
+import { SERVER_URL } from "../../../common/config";
 
 const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
@@ -14,7 +15,7 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     // const data = localStorage.getItem("auth");
     async function main() {
-      const res = await axios.get("http://localhost:3000/api/v1/auth/me", {
+      const res = await axios.get(SERVER_URL+"/api/v1/auth/me", {
         headers: {
           "Content-Type": "application/json",
         },

@@ -5,13 +5,14 @@ import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoute.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
+import {CLIENT_URL} from "../common/config.js"
 import cors from "cors";
 dotenv.config();
 import cookieParser from "cookie-parser";
 const app = express();
 
 connectDB();
-app.use(cors({ credentials: true, origin : "http://localhost:5173" }));
+app.use(cors({ credentials: true, origin : CLIENT_URL }));
 app.use(cookieParser());
 app.use(express.json());
 
