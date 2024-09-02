@@ -46,7 +46,9 @@ const CartPage = () => {
   //get payment gateway token
   const getToken = async () => {
     try {
-      const { data } = await axios.get("http://localhost:3000/api/v1/product/braintree/token");
+      const { data } = await axios.get(
+        "http://localhost:3000/api/v1/product/braintree/token"
+      );
       setClientToken(data?.clientToken);
     } catch (error) {
       console.log(error);
@@ -61,10 +63,13 @@ const CartPage = () => {
     try {
       setLoading(true);
       const { nonce } = await instance.requestPaymentMethod();
-      const { data } = await axios.post("http://localhost:3000/api/v1/product/braintree/payment", {
-        nonce,
-        cart,
-      });
+      const { data } = await axios.post(
+        "http://localhost:3000/api/v1/product/braintree/payment",
+        {
+          nonce,
+          cart,
+        }
+      );
       setLoading(false);
       localStorage.removeItem("cart");
       setCart([]);
@@ -94,15 +99,14 @@ const CartPage = () => {
         </div>
         <div className="row">
           <div className="col-md-8">
-            {cart?.map((p) => (
-              <div className="row mb-2 p-3 card flex-row" key={p._id}>
+            {cart?.map((p, i) => (
+              <div className="row mb-2 p-3 card flex-row" key={i}>
                 <div className="col-md-4">
                   <img
                     src={`http://localhost:3000/api/v1/product/product-photo/${p._id}`}
                     className="card-img-top"
                     alt={p.name}
-                    width="100px"
-                    height={"100px"}
+                    style={{ height: 250, width: 250 }}
                   />
                 </div>
                 <div className="col-md-8">

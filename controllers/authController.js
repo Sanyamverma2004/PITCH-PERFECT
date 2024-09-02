@@ -45,7 +45,6 @@ export const registerController = async (req, res) => {
       password: hashedPassword,
       answer,
     }).save();
-
     res.status(201).send({
       success: true,
       message: "User Register Successfully",
@@ -88,8 +87,13 @@ export const loginController = async (req, res) => {
       });
     }
     //token
-    const token = await JWT.sign({ _id: user._id }, process.env.JWT_SECRET, {
+    const userObject = user.toObject();
+    const token = JWT.sign(userObject, process.env.JWT_SECRET, {
       expiresIn: "7d",
+    });
+    res.cookie("authtoken", token, {
+      httpOnly: true,
+      maxAge: 3600000,
     });
     res.status(200).send({
       success: true,
@@ -215,8 +219,6 @@ export const getOrdersController = async (req, res) => {
   }
 };
 
-
-
 //orders
 export const getAllOrdersController = async (req, res) => {
   try {
@@ -256,3 +258,37 @@ export const orderStatusController = async (req, res) => {
     });
   }
 };
+export const meController = (req, res) => {
+  if (!req.cookies.authtoken) {
+    return res
+      .json({
+        message: "failure",
+        user: null,
+        token: req.cookies.authtoken,
+      })
+      .status(404);
+  }
+  const decode = JWT.verify(req.cookies.authtoken, process.env.JWT_SECRET);
+  console.log("decode", decode);
+  if (decode) {
+    return res.status(200).send({
+      message: "success",
+      user: decode,
+      token: req.cookies.authtoken,
+    });
+  } else {
+    return res.status(404).send({
+      message: "failure",
+      user: null,
+      token: req.cookies.authtoken,
+    });
+  }
+};
+
+export const logoutController=async(req,res)=>{
+  res.clearCookie('authtoken', {
+    httpOnly: true,
+  });
+  
+  res.status(200).send({ message: 'Logged out successfully' });
+}

@@ -31,11 +31,11 @@ const CategoryProduct = () => {
         <div className="row">
           <div className="col-md-9 offset-1">
             <div className="d-flex flex-wrap">
-              {products?.map((p) => (
+              {products?.map((p,i) => (
                 <div
                   className="card m-2"
                   style={{ width: "18rem" }}
-                  key={p._id}
+                  key={i}
                 >
                   <img
                     src={`http://localhost:3000/api/v1/product/product-photo/${p._id}`}

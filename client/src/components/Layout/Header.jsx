@@ -6,19 +6,24 @@ import SearchInput from "../Form/SearchInput";
 import useCategory from "../../hooks/useCategory";
 import { useCart } from "../../context/cart";
 import { Badge } from "antd";
-
+import axios from "axios";
 const Header = () => {
   const [auth, setAuth] = useAuth();
   const [cart] = useCart();
   const categories = useCategory();
-  const handleLogout = () => {
+  const handleLogout = async () => {
     setAuth({
       ...auth,
       user: null,
       token: "",
     });
-    localStorage.removeItem("auth");
-    toast.success("Logout Successfully");
+    const res = await axios.get("http://localhost:3000/api/v1/auth/logout", {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      withCredentials: true,
+    });
+    toast.success(res.data.message);
   };
   return (
     <>
@@ -60,8 +65,8 @@ const Header = () => {
                       All Categories
                     </Link>
                   </li>
-                  {categories?.map((c) => (
-                    <li>
+                  {categories?.map((c, idx) => (
+                    <li key={idx}>
                       <Link
                         className="dropdown-item"
                         to={`/category/${c.slug}`}

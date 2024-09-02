@@ -12,15 +12,23 @@ const AuthProvider = ({ children }) => {
   axios.defaults.headers.common["Authorization"] = auth?.token;
 
   useEffect(() => {
-    const data = localStorage.getItem("auth");
-    if (data) {
-      const parseData = JSON.parse(data);
+    // const data = localStorage.getItem("auth");
+    async function main() {
+      const res = await axios.get("http://localhost:3000/api/v1/auth/me", {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      });
+      const { message, user, token } = res.data;
+      console.log("res.data",res.data);
       setAuth({
         ...auth,
-        user: parseData.user,
-        token: parseData.token,
+        user: user,
+        token: token,
       });
     }
+    main();
     //eslint-disable-next-line
   }, []);
   return (
