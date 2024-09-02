@@ -93,6 +93,8 @@ export const loginController = async (req, res) => {
     });
     res.cookie("authtoken", token, {
       httpOnly: true,
+      sameSite: "None",
+      secure: true,
       maxAge: 3600000,
     });
     res.status(200).send({
@@ -285,10 +287,13 @@ export const meController = (req, res) => {
   }
 };
 
-export const logoutController=async(req,res)=>{
-  res.clearCookie('authtoken', {
+export const logoutController = async (req, res) => {
+  res.clearCookie("authtoken", {
     httpOnly: true,
+    sameSite: "None",
+    secure: true,
+    maxAge: 3600000,
   });
-  
-  res.status(200).send({ message: 'Logged out successfully' });
-}
+
+  res.status(200).send({ message: "Logged out successfully" });
+};
