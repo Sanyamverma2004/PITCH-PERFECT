@@ -20,9 +20,12 @@ app.use(morgan("dev"));
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/product", productRoutes);
 app.use("/api/v1/category", categoryRoutes);
-app.use("/", (req, res) => {
-  res.send("hello");
+
+// health check route
+app.get("/", (req, res) => {
+  res.send("PERFECT HEALTH").status(200);
 });
+
 app.listen(process.env.PORT, () => {
   console.log("app is running");
 });
